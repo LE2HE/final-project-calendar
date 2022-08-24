@@ -2,13 +2,15 @@ package com.example.finalproject.core.domain.entity;
 
 import com.example.finalproject.core.domain.Event;
 import com.example.finalproject.core.domain.RequestStatus;
-import com.example.finalproject.core.domain.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Table(name = "engagements")
@@ -23,6 +25,10 @@ public class Engagement extends BaseEntity {
     @ManyToOne
     private User attendee;
 
+    @Enumerated(value = EnumType.STRING)
     private RequestStatus requestStatus;
-    
+
+    public Event getEvent() {
+        return schedule.toEvent();
+    }
 }
