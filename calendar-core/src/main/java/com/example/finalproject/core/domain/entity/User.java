@@ -1,12 +1,14 @@
 package com.example.finalproject.core.domain.entity;
 
 import com.example.finalproject.core.util.Encryptor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Builder
 @NoArgsConstructor
 @Getter
 @Table(name = "users")
