@@ -2,8 +2,10 @@ package com.example.finalproject.api.controller;
 
 import com.example.finalproject.api.dto.AuthUser;
 import com.example.finalproject.api.dto.EventCreateReq;
+import com.example.finalproject.api.dto.NotificationCreateReq;
 import com.example.finalproject.api.dto.TaskCreateReq;
 import com.example.finalproject.api.service.EventService;
+import com.example.finalproject.api.service.NotificationService;
 import com.example.finalproject.api.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ public class ScheduleController {
 
     private final TaskService taskService;
     private final EventService eventService;
+    private final NotificationService notificationService;
 
     @PostMapping("/tasks")
     public ResponseEntity<Void> createTask(@RequestBody TaskCreateReq taskCreateReq,
@@ -31,6 +34,15 @@ public class ScheduleController {
     public ResponseEntity<Void> createEvent(@RequestBody EventCreateReq eventCreateReq,
                                            AuthUser authUser) {
         eventService.create(eventCreateReq, authUser);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/notifications")
+    public ResponseEntity<Void> createNotification(
+            @RequestBody NotificationCreateReq notificationCreateReq,
+            AuthUser authUser
+    ) {
+        notificationService.create(notificationCreateReq, authUser);
         return ResponseEntity.ok().build();
     }
 
