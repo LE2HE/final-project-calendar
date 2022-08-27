@@ -2,12 +2,14 @@ package com.example.finalproject.core.domain.entity;
 
 import com.example.finalproject.core.domain.Event;
 import com.example.finalproject.core.domain.RequestStatus;
+import com.example.finalproject.core.util.Period;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Builder
 @AllArgsConstructor
@@ -31,4 +33,13 @@ public class Engagement extends BaseEntity {
     public Event getEvent() {
         return schedule.toEvent();
     }
+
+    public boolean isOverlapped(LocalDate date) {
+        return this.schedule.isOverlapped(date);
+    }
+
+    public boolean isOverlapped(Period period) {
+        return this.schedule.isOverlapped(period);
+    }
+
 }
