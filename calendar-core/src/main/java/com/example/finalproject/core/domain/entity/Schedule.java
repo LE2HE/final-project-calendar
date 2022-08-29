@@ -85,10 +85,6 @@ public class Schedule extends BaseEntity {
         return new Notification(this);
     }
 
-    public boolean isOverlapped(LocalDate date) {
-        return Period.of(getStartAt(), getEndAt()).isOverlapped(date);
-    }
-
     public boolean isOverlapped(Period period) {
         return Period.of(getStartAt(), getEndAt()).isOverlapped(period);
     }
