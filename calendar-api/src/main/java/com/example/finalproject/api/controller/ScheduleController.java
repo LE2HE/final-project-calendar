@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
@@ -25,22 +26,24 @@ public class ScheduleController {
     private final NotificationService notificationService;
 
     @PostMapping("/tasks")
-    public ResponseEntity<Void> createTask(@RequestBody TaskCreateReq taskCreateReq,
-                                           AuthUser authUser) {
+    public ResponseEntity<Void> createTask(
+            @Valid @RequestBody TaskCreateReq taskCreateReq,
+            AuthUser authUser) {
         taskService.create(taskCreateReq, authUser);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/events")
-    public ResponseEntity<Void> createEvent(@RequestBody EventCreateReq eventCreateReq,
-                                           AuthUser authUser) {
+    public ResponseEntity<Void> createEvent(
+            @Valid @RequestBody EventCreateReq eventCreateReq,
+            AuthUser authUser) {
         eventService.create(eventCreateReq, authUser);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/notifications")
     public ResponseEntity<Void> createNotification(
-            @RequestBody NotificationCreateReq notificationCreateReq,
+            @Valid @RequestBody NotificationCreateReq notificationCreateReq,
             AuthUser authUser
     ) {
         notificationService.create(notificationCreateReq, authUser);
