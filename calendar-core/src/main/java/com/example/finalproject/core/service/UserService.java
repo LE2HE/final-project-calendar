@@ -3,6 +3,8 @@ package com.example.finalproject.core.service;
 import com.example.finalproject.core.domain.entity.User;
 import com.example.finalproject.core.domain.entity.repository.UserRepository;
 import com.example.finalproject.core.dto.UserCreateReq;
+import com.example.finalproject.core.exception.CalendarException;
+import com.example.finalproject.core.exception.ErrorCode;
 import com.example.finalproject.core.util.Encryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class UserService {
     public User create(UserCreateReq userCreateReq) {
         userRepository.findByEmail(userCreateReq.getEmail())
                 .ifPresent(u -> {
-                    throw new RuntimeException("user already existed!");
+                    throw new CalendarException(ErrorCode.ALREADY_EXISTS_USER);
                 });
 
         return userRepository.save(new User(
@@ -41,7 +43,7 @@ public class UserService {
     @Transactional
     public User findByUserId(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("no user by id."));
+                .orElseThrow(() -> new CalendarException(ErrorCode.USER_NOT_FOUND));
     }
 
 }
