@@ -1,10 +1,8 @@
 package com.example.finalproject.api.controller;
 
 import com.example.finalproject.api.dto.*;
-import com.example.finalproject.api.service.EventService;
-import com.example.finalproject.api.service.NotificationService;
-import com.example.finalproject.api.service.ScheduleQueryService;
-import com.example.finalproject.api.service.TaskService;
+import com.example.finalproject.api.service.*;
+import com.example.finalproject.core.domain.RequestStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +21,7 @@ public class ScheduleController {
     private final ScheduleQueryService scheduleQueryService;
     private final TaskService taskService;
     private final EventService eventService;
+    private final EngagementService engagementService;
     private final NotificationService notificationService;
 
     @PostMapping("/tasks")
@@ -73,6 +72,14 @@ public class ScheduleController {
             @RequestParam(required = false)
             @DateTimeFormat(pattern = "yyyy-MM") String yearMonth) {
         return scheduleQueryService.getScheduleByMonth(authUser, yearMonth == null ? YearMonth.now() : YearMonth.parse(yearMonth));
+    }
+
+    @PutMapping("/events/engagements/{engagementId}")
+    public RequestStatus updateEngagement(
+            @Valid @RequestBody ReplyEngagementReq replyEngagementReq,
+            @PathVariable Long engagementId,
+            AuthUser authUser) {
+        return engagementService.update(authUser, engagementId, replyEngagementReq.getType());
     }
 
 }
