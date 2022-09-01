@@ -1,7 +1,7 @@
 package com.example.finalproject.api.service;
 
-import com.example.finalproject.core.domain.entity.Engagement;
+import com.example.finalproject.api.dto.EngagementEmailStuff;
 
 public interface EmailService {
-    void sendEngagement(Engagement engagement);
+    void sendEngagement(EngagementEmailStuff stuff);
 }

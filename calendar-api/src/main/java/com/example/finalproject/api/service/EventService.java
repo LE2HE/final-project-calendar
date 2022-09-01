@@ -1,6 +1,7 @@
 package com.example.finalproject.api.service;
 
 import com.example.finalproject.api.dto.AuthUser;
+import com.example.finalproject.api.dto.EngagementEmailStuff;
 import com.example.finalproject.api.dto.EventCreateReq;
 import com.example.finalproject.core.domain.RequestStatus;
 import com.example.finalproject.core.domain.entity.Engagement;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class EventService {
 
     @Transactional
     public void create(EventCreateReq eventCreateReq, AuthUser authUser) {
+
         final List<Engagement> engagementList = engagementRepository.findAll(); //TODO findAll 금지 개선
 
         if (engagementList.stream().
@@ -45,17 +48,31 @@ public class EventService {
                 eventCreateReq.getEndAt(),
                 userService.findByUserId(authUser.getId())
         );
+
         scheduleRepository.save(eventSchedule);
-        eventCreateReq.getAttendeeIds()
-                .forEach(atId -> {
-                    final User attendee = userService.findByUserId(atId);
+
+        final List<User> attendees =
+                eventCreateReq.getAttendeeIds().stream()
+                        .map(userService::findByUserId)
+                        .collect(Collectors.toList());
+
+        attendees
+                .forEach(attendee -> {
                     final Engagement engagement = Engagement.builder()
                             .schedule(eventSchedule)
                             .requestStatus(RequestStatus.REQUESTED)
                             .attendee(attendee)
                             .build();
                     engagementRepository.save(engagement);
-                    emailService.sendEngagement(engagement);
+                    emailService.sendEngagement(EngagementEmailStuff.builder()
+                            .engagementId(engagement.getId())
+                            .title(engagement.getEvent().getTitle())
+                            .toEmail(engagement.getAttendee().getEmail())
+                            .attendeeEmails(attendees.stream()
+                                    .map(User::getEmail)
+                                    .collect(Collectors.toList()))
+                            .period(engagement.getEvent().getPeriod())
+                            .build());
                 });
 
     }
