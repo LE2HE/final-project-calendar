@@ -3,6 +3,7 @@ package com.example.finalproject.api.service;
 import com.example.finalproject.api.controller.BatchController;
 import com.example.finalproject.api.dto.EngagementEmailStuff;
 import com.example.finalproject.core.domain.entity.Engagement;
+import com.example.finalproject.core.domain.entity.Share;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,10 @@ public class FakeEmailService implements EmailService{
     @Override
     public void sendAlarmMail(BatchController.SendMailBatchReq req) {
         System.out.println("send alarm. " + req.toString());
+    }
+
+    @Override
+    public void sendShareRequestMail(String email, String name, Share.Direction direction) {
+        System.out.println("send share request mail. " + email +", " + name + ", " + direction);
     }
 }
