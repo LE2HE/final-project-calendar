@@ -2,13 +2,13 @@ package com.example.finalproject.api.dto;
 
 import com.example.finalproject.core.domain.RequestReplyType;
 
-public class ReplyEngagementReq {
+public class ReplyReq {
 
     private RequestReplyType type;
 
-    public ReplyEngagementReq() {}
+    public ReplyReq() {}
 
-    public ReplyEngagementReq(RequestReplyType type) {
+    public ReplyReq(RequestReplyType type) {
         this.type = type;
     }
 
